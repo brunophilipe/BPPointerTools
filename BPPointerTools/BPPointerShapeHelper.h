@@ -33,6 +33,7 @@ API_AVAILABLE(ios(13.4))
 @interface BPPointerShapeHelper: NSObject<UIPointerInteractionDelegate>
 
 @property (nonatomic, copy, nullable) UITargetedPreview * _Nonnull (^liftPointerEffectProvider)(void);
+@property (nonatomic, copy, nullable) UITargetedPreview * _Nonnull (^highlightPointerEffectProvider)(void);
 
 + (void)setRoundedRectPointerShapeProviderForView:(UIView * _Nonnull)view
                                     usingProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider;

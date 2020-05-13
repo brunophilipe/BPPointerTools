@@ -30,7 +30,9 @@
 #define var __auto_type
 
 typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
-    BPPointerShapeRoundedRect, BPPointerShapeBezierPath
+    BPPointerShapeNoShape,
+    BPPointerShapeRoundedRect,
+    BPPointerShapeBezierPath
 };
 
 @interface BPPointerShapeHelper ()
@@ -66,6 +68,15 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
     objc_setAssociatedObject(view, "BPPointerShapeHelper", helper, OBJC_ASSOCIATION_RETAIN);
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [self setPointerShapeOption:BPPointerShapeNoShape];
+    }
+    return self;
+}
+
 - (id)initWithView:(UIView * _Nonnull)view bezierPathProvider:(void (^)(UIBezierPath * _Nullable * _Nullable))provider
 {
     self = [super init];
@@ -96,14 +107,7 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 _roundedRectPointerShapeProvider(&rect, &radius);
 
-                var shape = [UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius];
-
-                if (_liftPointerEffectProvider != nil) {
-                    var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
-                    return [UIPointerStyle styleWithEffect:effect shape:shape];
-                } else {
-                    return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
-                }
+                return [self pointerStyleWithShape:[UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius]];
             }
             break;
         }
@@ -116,19 +120,32 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 if (path == nil) { return nil; }
 
-                var shape = [UIPointerShape shapeWithPath:path];
-
-                if (_liftPointerEffectProvider != nil) {
-                    var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
-                    return [UIPointerStyle styleWithEffect:effect shape:shape];
-                } else {
-                    return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
-                }
+                return [self pointerStyleWithShape:[UIPointerShape shapeWithPath:path]];
             }
+            break;
+        }
+
+        default: {
+            return [self pointerStyleWithShape:nil];
         }
     }
 
     return nil;
+}
+
+- (UIPointerStyle *)pointerStyleWithShape:(UIPointerShape * _Nullable)shape
+{
+    if (_liftPointerEffectProvider != nil) {
+        var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
+        return [UIPointerStyle styleWithEffect:effect shape:shape];
+    } else if (_highlightPointerEffectProvider != nil) {
+        var effect = [UIPointerHighlightEffect effectWithPreview:_highlightPointerEffectProvider()];
+        return [UIPointerStyle styleWithEffect:effect shape:shape];
+    } else if (shape != nil) {
+        return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
+    } else {
+        return nil;
+    }
 }
 
 @end
