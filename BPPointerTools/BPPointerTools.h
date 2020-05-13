@@ -14,6 +14,4 @@ FOUNDATION_EXPORT double BPPointerToolsVersionNumber;
 //! Project version string for BPPointerTools.
 FOUNDATION_EXPORT const unsigned char BPPointerToolsVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <BPPointerTools/PublicHeader.h>
-
-
+#import "BPPointerShapeHelper.h"
