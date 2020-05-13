@@ -135,17 +135,33 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
 - (UIPointerStyle *)pointerStyleWithShape:(UIPointerShape * _Nullable)shape
 {
-    if (_liftPointerEffectProvider != nil) {
-        var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
+    UITargetedPreview *liftPreview = [self liftPointerEffectPreview];
+    if (liftPreview != nil) {
+        var effect = [UIPointerLiftEffect effectWithPreview:liftPreview];
         return [UIPointerStyle styleWithEffect:effect shape:shape];
-    } else if (_highlightPointerEffectProvider != nil) {
-        var effect = [UIPointerHighlightEffect effectWithPreview:_highlightPointerEffectProvider()];
-        return [UIPointerStyle styleWithEffect:effect shape:shape];
-    } else if (shape != nil) {
-        return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
-    } else {
-        return nil;
     }
+
+    UITargetedPreview *highlightPreview = [self highlightPointerEffectPreview];
+    if (highlightPreview != nil) {
+        var effect = [UIPointerHighlightEffect effectWithPreview:highlightPreview];
+        return [UIPointerStyle styleWithEffect:effect shape:shape];
+    }
+
+    if (shape != nil) {
+        return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
+    }
+
+    return nil;
+}
+
+- (UITargetedPreview *)highlightPointerEffectPreview
+{
+    return nil;
+}
+
+- (UITargetedPreview *)liftPointerEffectPreview
+{
+    return nil;
 }
 
 @end

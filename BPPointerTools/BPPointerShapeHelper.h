@@ -32,9 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(ios(13.4))
 @interface BPPointerShapeHelper: NSObject<UIPointerInteractionDelegate>
 
-@property (nonatomic, copy, nullable) UITargetedPreview * _Nonnull (^liftPointerEffectProvider)(void);
-@property (nonatomic, copy, nullable) UITargetedPreview * _Nonnull (^highlightPointerEffectProvider)(void);
-
 + (void)setRoundedRectPointerShapeProviderForView:(UIView * _Nonnull)view
                                     usingProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider;
 
@@ -44,6 +41,9 @@ API_AVAILABLE(ios(13.4))
 - (id)initWithView:(UIView * _Nonnull)view bezierPathProvider:(void (^)(UIBezierPath * _Nullable * _Nullable))provider;
 
 - (id)initWithView:(UIView * _Nonnull)view roundedRectProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider;
+
+- (UITargetedPreview * _Nullable)liftPointerEffectPreview;
+- (UITargetedPreview * _Nullable)highlightPointerEffectPreview;
 
 @end
 
