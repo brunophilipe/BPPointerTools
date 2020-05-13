@@ -27,6 +27,8 @@
 #import "BPPointerShapeHelper.h"
 #import <objc/runtime.h>
 
+#define var __auto_type
+
 typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
     BPPointerShapeRoundedRect, BPPointerShapeBezierPath
 };
@@ -45,9 +47,8 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 + (void)setRoundedRectPointerShapeProviderForView:(UIView * _Nonnull)view
                                     usingProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider;
 {
-    BPPointerShapeHelper *helper = [[BPPointerShapeHelper alloc] init];
-    [helper setRoundedRectPointerShapeProvider:provider];
-    [helper setPointerShapeOption:BPPointerShapeRoundedRect];
+    BPPointerShapeHelper *helper = [[BPPointerShapeHelper alloc] initWithView:view
+                                                          roundedRectProvider:provider];
 
     [view addInteraction:[[UIPointerInteraction alloc] initWithDelegate:helper]];
 
@@ -57,13 +58,32 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 + (void)setBezierPathPointerShapeProviderForView:(UIView * _Nonnull)view
                                    usingProvider:(void (^)(UIBezierPath **))provider;
 {
-    BPPointerShapeHelper *helper = [[BPPointerShapeHelper alloc] init];
-    [helper setBezierPathPointerShapeProvider:provider];
-    [helper setPointerShapeOption:BPPointerShapeBezierPath];
+    BPPointerShapeHelper *helper = [[BPPointerShapeHelper alloc] initWithView:view
+                                                           bezierPathProvider:provider];
 
     [view addInteraction:[[UIPointerInteraction alloc] initWithDelegate:helper]];
 
     objc_setAssociatedObject(view, "BPPointerShapeHelper", helper, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (id)initWithView:(UIView * _Nonnull)view bezierPathProvider:(void (^)(UIBezierPath * _Nullable * _Nullable))provider
+{
+    self = [super init];
+    if (self) {
+        [self setBezierPathPointerShapeProvider:provider];
+        [self setPointerShapeOption:BPPointerShapeBezierPath];
+    }
+    return self;
+}
+
+- (id)initWithView:(UIView * _Nonnull)view roundedRectProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider
+{
+	self = [super init];
+    if (self) {
+        [self setRoundedRectPointerShapeProvider:provider];
+        [self setPointerShapeOption:BPPointerShapeRoundedRect];
+    }
+    return self;
 }
 
 - (UIPointerStyle *)pointerInteraction:(UIPointerInteraction *)interaction styleForRegion:(UIPointerRegion *)region
@@ -76,8 +96,14 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 _roundedRectPointerShapeProvider(&rect, &radius);
 
-                return [UIPointerStyle styleWithShape:[UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius]
-                                      constrainedAxes:UIAxisNeither];
+                var shape = [UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius];
+
+                if (_liftPointerEffectProvider != nil) {
+                    var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
+                    return [UIPointerStyle styleWithEffect:effect shape:shape];
+                } else {
+                    return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
+                }
             }
             break;
         }
@@ -90,8 +116,14 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 if (path == nil) { return nil; }
 
-                return [UIPointerStyle styleWithShape:[UIPointerShape shapeWithPath:path]
-                                      constrainedAxes:UIAxisNeither];
+                var shape = [UIPointerShape shapeWithPath:path];
+
+                if (_liftPointerEffectProvider != nil) {
+                    var effect = [UIPointerLiftEffect effectWithPreview:_liftPointerEffectProvider()];
+                    return [UIPointerStyle styleWithEffect:effect shape:shape];
+                } else {
+                    return [UIPointerStyle styleWithShape:shape constrainedAxes:UIAxisNeither];
+                }
             }
         }
     }
