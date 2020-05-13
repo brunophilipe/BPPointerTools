@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		152FEFEE246C7591002B6930 /* BPPointerTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 152FEFEC246C7591002B6930 /* BPPointerTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		152FEFF6246C75A2002B6930 /* BPPointerShapeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 152FEFF4246C75A2002B6930 /* BPPointerShapeHelper.m */; };
+		152FEFF7246C75A2002B6930 /* BPPointerShapeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 152FEFF5246C75A2002B6930 /* BPPointerShapeHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		152FEFE9246C7591002B6930 /* BPPointerTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BPPointerTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		152FEFEC246C7591002B6930 /* BPPointerTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPPointerTools.h; sourceTree = "<group>"; };
 		152FEFED246C7591002B6930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		152FEFF4246C75A2002B6930 /* BPPointerShapeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPPointerShapeHelper.m; sourceTree = "<group>"; };
+		152FEFF5246C75A2002B6930 /* BPPointerShapeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPPointerShapeHelper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +50,8 @@
 		152FEFEB246C7591002B6930 /* BPPointerTools */ = {
 			isa = PBXGroup;
 			children = (
+				152FEFF5246C75A2002B6930 /* BPPointerShapeHelper.h */,
+				152FEFF4246C75A2002B6930 /* BPPointerShapeHelper.m */,
 				152FEFEC246C7591002B6930 /* BPPointerTools.h */,
 				152FEFED246C7591002B6930 /* Info.plist */,
 			);
@@ -59,6 +65,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				152FEFF7246C75A2002B6930 /* BPPointerShapeHelper.h in Headers */,
 				152FEFEE246C7591002B6930 /* BPPointerTools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				152FEFF6246C75A2002B6930 /* BPPointerShapeHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
