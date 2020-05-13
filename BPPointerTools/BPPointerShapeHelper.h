@@ -42,8 +42,8 @@ API_AVAILABLE(ios(13.4))
 
 - (id)initWithView:(UIView * _Nonnull)view roundedRectProvider:(void (^)(CGRect * _Nonnull, CGFloat * _Nonnull))provider;
 
-- (UITargetedPreview * _Nullable)liftPointerEffectPreview;
-- (UITargetedPreview * _Nullable)highlightPointerEffectPreview;
+- (UITargetedPreview * _Nullable)liftPointerEffectPreviewWithInteractionView:(UIView *)interactionView;
+- (UITargetedPreview * _Nullable)highlightPointerEffectPreviewWithInteractionView:(UIView *)interactionView;
 
 @end
 

@@ -107,7 +107,8 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 _roundedRectPointerShapeProvider(&rect, &radius);
 
-                return [self pointerStyleWithShape:[UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius]];
+                return [self pointerStyleWithShape:[UIPointerShape shapeWithRoundedRect:rect cornerRadius:radius]
+								   interactionView:[interaction view]];
             }
             break;
         }
@@ -120,28 +121,29 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
 
                 if (path == nil) { return nil; }
 
-                return [self pointerStyleWithShape:[UIPointerShape shapeWithPath:path]];
+                return [self pointerStyleWithShape:[UIPointerShape shapeWithPath:path]
+								   interactionView:[interaction view]];
             }
             break;
         }
 
         default: {
-            return [self pointerStyleWithShape:nil];
+            return [self pointerStyleWithShape:nil interactionView:[interaction view]];
         }
     }
 
     return nil;
 }
 
-- (UIPointerStyle *)pointerStyleWithShape:(UIPointerShape * _Nullable)shape
+- (UIPointerStyle *)pointerStyleWithShape:(UIPointerShape * _Nullable)shape interactionView:(UIView *)interactionView
 {
-    UITargetedPreview *liftPreview = [self liftPointerEffectPreview];
+    UITargetedPreview *liftPreview = [self liftPointerEffectPreviewWithInteractionView:interactionView];
     if (liftPreview != nil) {
         var effect = [UIPointerLiftEffect effectWithPreview:liftPreview];
         return [UIPointerStyle styleWithEffect:effect shape:shape];
     }
 
-    UITargetedPreview *highlightPreview = [self highlightPointerEffectPreview];
+    UITargetedPreview *highlightPreview = [self highlightPointerEffectPreviewWithInteractionView:interactionView];
     if (highlightPreview != nil) {
         var effect = [UIPointerHighlightEffect effectWithPreview:highlightPreview];
         return [UIPointerStyle styleWithEffect:effect shape:shape];
@@ -154,12 +156,12 @@ typedef NS_ENUM(NSUInteger, BPPointerShapeOption) {
     return nil;
 }
 
-- (UITargetedPreview *)highlightPointerEffectPreview
+- (UITargetedPreview *)highlightPointerEffectPreviewWithInteractionView:(UIView *)interactionView
 {
     return nil;
 }
 
-- (UITargetedPreview *)liftPointerEffectPreview
+- (UITargetedPreview *)liftPointerEffectPreviewWithInteractionView:(UIView *)interactionView
 {
     return nil;
 }
