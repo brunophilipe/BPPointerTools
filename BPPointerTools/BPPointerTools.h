@@ -14,4 +14,4 @@ FOUNDATION_EXPORT double BPPointerToolsVersionNumber;
 //! Project version string for BPPointerTools.
 FOUNDATION_EXPORT const unsigned char BPPointerToolsVersionString[];
 
-#import "BPPointerShapeHelper.h"
+#import <BPPointerTools/BPPointerShapeHelper.h>
