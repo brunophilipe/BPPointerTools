@@ -38,6 +38,7 @@
 				152FEFEA246C7591002B6930 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		152FEFEA246C7591002B6930 /* Products */ = {
 			isa = PBXGroup;
